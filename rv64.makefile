@@ -1,7 +1,8 @@
-CXX := riscv32-unknown-elf-g++
+CXX := riscv64-unknown-elf-g++
 
-CXXFLAGS := -mabi=ilp32f -march=rv32gcv -fno-PIC -Iinclude
+CXXFLAGS := -mabi=lp64d -march=rv64gcv -fno-PIC -Iinclude
 LDFLAGS := -static -mcmodel=medany
+LLCFLAGS := -O3 -mtriple riscv64 -target-abi lp64d -mattr=+m,+v,+d -riscv-v-vector-bits-min=128
 
 .PHONY: all
 all: build/bert.elf
@@ -30,9 +31,7 @@ build/bert.S: src/bert-with-weights.mlir
 		--convert-func-to-llvm \
 		--reconcile-unrealized-casts | \
 	buddy-translate --mlir-to-llvmir | \
-	buddy-llc -O3 -mtriple riscv32 -target-abi ilp32 \
-		-mattr=+m,+v,+zve32f -filetype=asm -riscv-v-vector-bits-min=128 \
-		-o $@
+	buddy-llc $(LLCFLAGS) -filetype=asm -o $@
 
 build/spike-main.o: src/spike-main.cpp
 	$(CXX) $^ $(CXXFLAGS) -c -o $@

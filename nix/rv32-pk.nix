@@ -1,4 +1,4 @@
-{ stdenvNoCC, rv32-gnu-toolchain, fetchFromGitHub, autoreconfHook }:
+{ stdenvNoCC, riscv-gnu-toolchain, fetchFromGitHub, autoreconfHook }:
 
 stdenvNoCC.mkDerivation rec {
   pname = "riscv-pk";
@@ -13,7 +13,7 @@ stdenvNoCC.mkDerivation rec {
 
   nativeBuildInputs = [
     autoreconfHook
-    rv32-gnu-toolchain
+    riscv-gnu-toolchain
   ];
 
   preConfigure = ''

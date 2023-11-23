@@ -25,6 +25,13 @@
                 spike
               ];
             };
+            rv64 = pkgs.mkShell {
+              buildInputs = with pkgs; [
+                pkgsCross.riscv64.gcc
+                buddy-mlit
+                spike
+              ];
+            };
           };
         }
       )
